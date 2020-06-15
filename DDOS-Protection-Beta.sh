@@ -223,7 +223,6 @@ iptables -A INPUT -p tcp -m tcp -m conntrack --ctstate INVALID,UNTRACKED -j SYNP
 iptables -A INPUT -m conntrack --ctstate INVALID -j DROP
 fi
 echo
-fi
 printf "${CYAN} L'installation du système anti-DDOS est terminé ! \\n"
 printf "${CYAN} La commande ipban est désormais disponible\\n"
 printf "${WHITE}\\n"
