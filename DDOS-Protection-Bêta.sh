@@ -64,8 +64,22 @@ EOF
 
 # Install iptables and update all the packets
 
-echo "* Install IPTABLES and update the packets"
-apt install iptables -y && apt update && apt upgrade -y
+printf "\\n"
+apt update -y
+apt install python3 python3-pip -y
+mkdir -p $Folder > /dev/null 2>&1
+if [ -f "$curl" ]; then
+       curl https://raw.githubusercontent.com/Ghost-devlopper/IPbanner/master/Banip.py --output /usr/bin/ipban
+    else 
+apt install curl -y
+        curl https://raw.githubusercontent.com/Ghost-devlopper/IPbanner/master/Banip.py --output /usr/bin/ipban
+fi
+if [ -f "$iptables" ]; then
+    echo""
+    else 
+$Installer install iptables -y
+fi
+chmod +x /usr/bin/ipban 2>&1
 
 echo
     printf "${BLUE} Avez-vous un serveur SSH ❓ [o/N]\\n"
@@ -76,10 +90,13 @@ then
     read reponse
 if [[ "$reponse" == "o" ]]
 then
+/sbin/iptables -A INPUT -p tcp --dport ssh -m conntrack --ctstate NEW -m recent --set
+        /sbin/iptables -A INPUT -p tcp --dport ssh -m conntrack --ctstate NEW -m recent --update --seconds 60 --hitcount 10 -j DROP
+fi
+echo        
         printf "${CYAN} Parfait les règles sont activent !"
         /sbin/iptables -A INPUT -p tcp --dport ssh -m conntrack --ctstate NEW -m recent --set
         /sbin/iptables -A INPUT -p tcp --dport ssh -m conntrack --ctstate NEW -m recent --update --seconds 60 --hitcount 10 -j DROP
-fi
 fi
 echo
     printf "${YELLOW} Souhaitez-vous bloquer le Port Scan ? [o/N]\\n"
@@ -100,6 +117,7 @@ if [[ "$reponse" == "o" ]]
 then 
 printf "${CYAN} D'accord, les règles sont désormais actives !"
 iptables -t mangle -A PREROUTING -m conntrack --ctstate INVALID -j DROP
+fi
 echo
 echo
     printf "${YELLOW} Voulez vous bloquer les packets non SYN ? [o/N]\\n"
@@ -108,6 +126,7 @@ if [[ "$reponse" == "o" ]]
 then 
 printf "${CYAN} Youpi ! Les packets SYN sont désormais bloqués !"
 iptables -t mangle -A PREROUTING -p tcp ! --syn -m conntrack --ctstate NEW -j DROP
+fi
 echo
 echo
     printf "${YELLOW} Voulez vous bloquer les packets avec faux drapeaux TCP ? [o/N]\\n"
@@ -128,6 +147,7 @@ iptables -t mangle -A PREROUTING -p tcp --tcp-flags ALL NONE -j DROP
 iptables -t mangle -A PREROUTING -p tcp --tcp-flags ALL FIN,PSH,URG -j DROP 
 iptables -t mangle -A PREROUTING -p tcp --tcp-flags ALL SYN,FIN,PSH,URG -j DROP 
 iptables -t mangle -A PREROUTING -p tcp --tcp-flags ALL SYN,RST,ACK,FIN,URG -j DROP
+fi
 echo
 echo
     printf "${YELLOW} Voulez vous bloquer les packets depuis les subnets privés ? [o/N]\\n"
@@ -144,6 +164,7 @@ iptables -t mangle -A PREROUTING -s 10.0.0.0/8 -j DROP
 iptables -t mangle -A PREROUTING -s 0.0.0.0/8 -j DROP 
 iptables -t mangle -A PREROUTING -s 240.0.0.0/5 -j DROP 
 iptables -t mangle -A PREROUTING -s 127.0.0.0/8 ! -i lo -j DROP
+fi
 echo
 echo
     printf "${YELLOW} Voulez vous bloquer les packets ICMP ? [o/N]\\n"
@@ -153,6 +174,7 @@ then
 printf "${CYAN} La règle est désormais active !"
 iptables -t mangle -A PREROUTING -p icmp -j DROP
 iptables -A INPUT -p tcp -m connlimit --connlimit-above 80 -j REJECT --reject-with tcp-reset
+fi
 echo
 echo
     printf "${YELLOW} Voulez vous limiter les requêtes TCP sur le port 80 ? [o/N]\\n"
@@ -161,6 +183,7 @@ if [[ "$reponse" == "o" ]]
 then 
 printf "${CYAN} C'est désormais activé !"
 iptables -A INPUT -p tcp --syn --dport 80 -m connlimit --connlimit-above 15 --connlimit-mask 10 -j REJECT --reject-with tcp-reset
+fi
 echo
 echo
     printf "${YELLOW} Voulez vous limiter les requêtes TCP sur le port 443 ? [o/N]\\n"
@@ -169,6 +192,7 @@ if [[ "$reponse" == "o" ]]
 then 
 printf "${CYAN} C'est désormais activé !"
 iptables -A INPUT -p tcp --syn --dport 443 -m connlimit --connlimit-above 15 --connlimit-mask 10 -j REJECT --reject-with tcp-reset
+fi
 echo
 echo
     printf "${YELLOW} Voulez vous limiter les connexions simultanées sur votre serveur? [o/N]\\n"
@@ -178,43 +202,20 @@ then
 printf "${CYAN} C'est désormais activé !"
 iptables -A INPUT -p tcp -m conntrack --ctstate NEW -m limit --limit 60/s --limit-burst 20 -j ACCEPT 
 iptables -A INPUT -p tcp -m conntrack --ctstate NEW -j DROP
-echo
-echo
-    printf "${YELLOW} Voulez vous limiter les connexions simultanées sur votre serveur? [o/N]\\n"
-    read reponse
-if [[ "$reponse" == "o" ]]
-then 
-printf "${CYAN} C'est désormais activé !"
-iptables -A INPUT -p tcp -m conntrack --ctstate NEW -m limit --limit 60/s --limit-burst 20 -j ACCEPT 
-iptables -A INPUT -p tcp -m conntrack --ctstate NEW -j DROP
+fi
 echo
 echo
     printf "${YELLOW} Souhaitez-vous bloquer les fragments dans toutes les chaînes ? [o/N]\\n"
     read reponse
 if [[ "$reponse" == "o" ]]
 then 
-    printf "${CYAN} Parfait la règle est active !"
-    /sbin/iptables -t mangle -A PREROUTING -f -j DROP
+    printf "${CYAN} Parfait la règle est active ! \\n"
+iptables -t mangle -A PREROUTING -f -j DROP
 fi
-echo
-    printf "${YELLOW} Voulez vous accepter les connexions de docker ? [o/N]\\n"
-    read reponse
-if [[ "$reponse" == "o" ]]
-then 
-    printf "${CYAN} Connexions Acceptées !"
-    iptables FORWARD -i docker0 -o eth0 -j ACCEPT
-    iptables FORWARD -i eth0 -o docker0 -j ACCEPT
-fi
-echo
     printf "${YELLOW} Voulez vous que les règles s'activent automatiquement au démarrage ? [o/N]\\n"
     read reponse
 if [[ "$reponse" == "o" ]]
 then 
-    printf "${CYAN} Règles actives !"
-   service iptables-persistent
+    printf "${CYAN} Règles actives ! \\n"
+   iptables-save && iptables-save &gt; /etc/iptables/rules.v4 && iptables-save &gt; /etc/iptables/rules.v6
 fi
-
-
-
-
-
