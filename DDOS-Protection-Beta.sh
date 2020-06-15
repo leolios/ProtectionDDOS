@@ -213,7 +213,7 @@ then
 iptables -t mangle -A PREROUTING -f -j DROP
 fi
 echo
-    printf "${YELLOW} Voulez vous activer le système de mitigation SYNPROXY (Bêta) [o/N]\\n"
+    printf "${YELLOW} Voulez vous activer le système SYNPROXY (Bêta) [o/N]\\n"
     read reponse
 if [[ "$reponse" == "o" ]]
 then 
@@ -223,12 +223,6 @@ iptables -A INPUT -p tcp -m tcp -m conntrack --ctstate INVALID,UNTRACKED -j SYNP
 iptables -A INPUT -m conntrack --ctstate INVALID -j DROP
 fi
 echo
-    printf "${YELLOW} Voulez vous que les règles s'activent automatiquement au démarrage ? [o/N]\\n"
-    read reponse
-if [[ "$reponse" == "o" ]]
-then 
-   iptables-save && iptables-save &gt; /etc/iptables/rules.v4 && iptables-save &gt; /etc/iptables/rules.v6
-printf "${CYAN} Règles actives ! \\n"
 fi
 printf "${CYAN} L'installation du système anti-DDOS est terminé ! \\n"
 printf "${CYAN} La commande ipban est désormais disponible\\n"
