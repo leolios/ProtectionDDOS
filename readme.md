@@ -24,6 +24,7 @@ sysctl -p
 
 Vous seriez surpris du nombre de tentatives de connexions TCP *bizarres* qu'on trouve sur Internet : [Xmas Scan par nmap](https://nmap.org/man/fr/man-port-scanning-techniques.html) n'est un exemple avec toutes les flags TCP à 1. Du coup, voici un jeu de règles permettant de rejeter sans trop se poser de questions les connexions TCP avec des combinaisons de flag impossibles ou improbables :
 
+```bash
 *mangle
 # paquet avec SYN et FIN à la fois
 -A PREROUTING -p tcp -m tcp --tcp-flags FIN,SYN FIN,SYN -j DROP
@@ -47,6 +48,7 @@ Vous seriez surpris du nombre de tentatives de connexions TCP *bizarres* qu'on
 -A PREROUTING -p tcp -m tcp --tcp-flags FIN,SYN,RST,PSH,ACK,URG FIN,SYN,PSH,URG -j DROP
 # paquet avec FIN,SYN,RST,ACK,URG à 1 mais pas PSH
 -A PREROUTING -p tcp -m tcp --tcp-flags FIN,SYN,RST,PSH,ACK,URG FIN,SYN,RST,ACK,URG -j DROP
+```
 
 On peut également établir d'autres règles de filtrage triviales basées sur les IP sources en dropant tout ce qui arrive d'un réseau privé/réservé. C'est du spoofing d'IP source, c'est très peu probable pour un serveur avec uniquement une IP publique sur Internet.
 
