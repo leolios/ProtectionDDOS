@@ -1,3 +1,4 @@
+#!/bin/bash
 # Script béta test pour faire des réglages dans iptable.
 
 iptables -A INPUT -i lo -j ACCEPT                                      # Autoriser les flux en localhost
