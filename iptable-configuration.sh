@@ -46,3 +46,7 @@ iptables-save > /etc/iptables/rules.v4
 -A PREROUTING -s 0.0.0.0/8 -j DROP
 -A PREROUTING -s 240.0.0.0/5 -j DROP
 -A PREROUTING -s 127.0.0.0/8 ! -i lo -j DROP
+
+
+*filter
+-A INPUT -m state --state INVALID -j DROP
