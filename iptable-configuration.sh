@@ -35,3 +35,14 @@ iptables-save > /etc/iptables/rules.v4
 -A PREROUTING -p tcp -m tcp --tcp-flags FIN,SYN,RST,PSH,ACK,URG FIN,SYN,PSH,URG -j DROP
 # paquet avec FIN,SYN,RST,ACK,URG à 1 mais pas PSH
 -A PREROUTING -p tcp -m tcp --tcp-flags FIN,SYN,RST,PSH,ACK,URG FIN,SYN,RST,ACK,URG -j DROP
+
+*mangle
+-A PREROUTING -s 224.0.0.0/8 -j DROP
+-A PREROUTING -s 169.254.0.0/16 -j DROP
+-A PREROUTING -s 172.16.0.0/12 -j DROP
+-A PREROUTING -s 192.0.2.0/24 -j DROP
+-A PREROUTING -s 192.168.0.0/16 -j DROP
+-A PREROUTING -s 10.0.0.0/8 -j DROP
+-A PREROUTING -s 0.0.0.0/8 -j DROP
+-A PREROUTING -s 240.0.0.0/5 -j DROP
+-A PREROUTING -s 127.0.0.0/8 ! -i lo -j DROP
