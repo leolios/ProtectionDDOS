@@ -50,3 +50,16 @@ iptables-save > /etc/iptables/rules.v4
 
 *filter
 -A INPUT -m state --state INVALID -j DROP
+
+*raw
+# 1. en -t raw, les paquets TCP avec le flag SYN à destination des ports 22,80 ou 443 ne seront pas suivi par le connexion tracker (et donc traités plus rapidement)
+-A PREROUTING -i eth0 -p tcp -m multiport --dports 22,80,443 -m tcp --tcp-flags FIN,SYN,RST,ACK SYN -j CT --notrack
+
+*filter
+# 2. en input-filter, les paquets TCP avec le flag SYN à destination des ports 22,80 ou 443 non suivi (UNTRACKED ou INVALID) et les fais suivre à SYNPROXY.
+# C'est à ce moment que synproxy répond le SYN-ACK à l'émeteur du SYN et créer une connexion à l'état ESTABLISHED dans conntrack, si et seulement si l'émetteur retourne un ACK valide.
+# Note : Les paquets avec un tcp-cookie invalides sont dropés, mais pas ceux avec des flags non-standard, il faudra les filtrer par ailleurs. 
+-A INPUT -i eth0 -p tcp -m multiport --dports 22,80,443 -m tcp -m state --state INVALID,UNTRACKED -j SYNPROXY --sack-perm --timestamp --wscale 7 --mss 1460
+
+# 3. en input-filter, la règles SYNPROXY doit être suivi de celle-ci pour rejeter les paquets restant en état INVALID.
+-A INPUT -i eth0 -p tcp -m multiport --dports 22,80,443 -m tcp -m state --state INVALID -j DROP
