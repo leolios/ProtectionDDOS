@@ -77,9 +77,10 @@ Un des premières règles consiste à désactiver le mode  « loose » (ça n
 
 On a déjà fait ça plus haut en mettant l'option nf_conntrack_tcp_loose à 0 dans le kernel. Combiné ça avec une règle qui drop les connexions dans un état invalide et vous empêchez ces paquets ACK d'établir des connexions avec votre serveur.
 
+```bash
 *filter
 -A INPUT -m state --state INVALID -j DROP
-
+````
 #### SynProxy
 
 Synproxy est un mécanisme introduit dans la 1.4.1 d'iptables pour permettre de répondre efficacement aux attaques par SYN flooding (i.e. noyer le serveur sous des demandes de SYN qui ne seront pas suivi ACK). Le principe est de sortir les paquets SYN du connection-tracker d'iptables (conntrack) dont les opérations sont assez coûteuses en ressources et d'établir à la places les connexions au travers d'un proxy-TCP optimisé pour traiter spécifiquement ce type de demandes et ne transmettre à votre serveur que les connexions TCP correctement établies.
@@ -88,6 +89,7 @@ Synproxy est un mécanisme introduit dans la 1.4.1 d'iptables pour permettre de 
 
 On peut le mettre en place à l'aide des lignes suivantes :
 
+```bash
 *raw
 # 1. en -t raw, les paquets TCP avec le flag SYN à destination des ports 22,80 ou 443 ne seront pas suivi par le connexion tracker (et donc traités plus rapidement)
 -A PREROUTING -i eth0 -p tcp -m multiport --dports 22,80,443 -m tcp --tcp-flags FIN,SYN,RST,ACK SYN -j CT --notrack
@@ -100,6 +102,7 @@ On peut le mettre en place à l'aide des lignes suivantes :
 
 # 3. en input-filter, la règles SYNPROXY doit être suivi de celle-ci pour rejeter les paquets restant en état INVALID.
 -A INPUT -i eth0 -p tcp -m multiport --dports 22,80,443 -m tcp -m state --state INVALID -j DROP
+```
 
 Cette partie mérite qu'on s'y attarde un peu. La première règle se fait en PREROUTING-raw dès la réception du paquet, empêchant ainsi toute consommation inutile de mémoire. Notre paquet passera ensuite en PREROUTING-mangle, permettant de filtrer les paquets anormaux, et arrivera alors à la règle 2 ou SYN-PROXY fera son boulot créer des connexions ESTABLISHED seulement lorsque le client effectue un 3WHS valide. La dernière règle rejette enfin toutes les connexions restantes dans un état INVALID, appliquant au passage la protection contre les états invalides qu'on a vu juste avant.
 
@@ -109,13 +112,17 @@ Bon on s'est protégé des DDOS simples à base de SYN et de ACK TCP, mais o
 
 Pour cela, une technique consiste à regrouper les IP sources par bloc de 256 (i.e par subnet source en /24) et de n'autoriser qu'un nombre maximum de demandes de connexions SYN par seconde pour chaque subnet. On peut faire ça avec le module hashlimit. Cela aura le mérite mettre un plafond de connexion par seconde vers votre serveur par groupe de 256 IP.
 
+```bash
 *raw
 -A PREROUTING -i eth0 -p tcp -m tcp --syn -m multiport --dports 22,80,443 -m hashlimit --hashlimit-above 200/sec --hashlimit-burst 1000 --hashlimit-mode srcip --hashlimit-name syn --hashlimit-htable-size 2097152 --hashlimit-srcmask 24 -j DROP
+```
 
 On peut appliquer une règle similaire sur le nombre de connexions maximum autorisées en simultané par une seule IP source à l'aide du module connlimit.
 
+```bash
 *filter
 -A INPUT -i eth0 -p tcp -m connlimit --connlimit-above 100 -j REJECT
+```
 
 Ce qui empêchera une seule IP de créer un nombre insensé de connexions avec votre serveur.
 
@@ -129,10 +136,12 @@ Du coup on peut passer à une règle que je trouve plus rigolote, qui consiste �
 
 On peut faire ça avec les règles suivantes.
 
+```bash
 *filter
 -A INPUT -m recent --rcheck --seconds 86400 --name portscan --mask 255.255.255.255 --rsource -j DROP
 -A INPUT -m recent --remove --name portscan --mask 255.255.255.255 --rsource
 -A INPUT -p tcp -m multiport --dports 25,445,1433,3389 -m recent --set --name portscan --mask 255.255.255.255 --rsource -j DROP
+```
 
 Alors attention avec cette règle, un attaquant motivé qui s'en rendrait compte, pourrait forger des paquets TCP ([qui a dit Scapy ?](http://www.secdev.org/projects/scapy/)) à destination d'un de ces ports mais avec des IP sources fausses. Conséquence : votre serveur va se mettre à blacklister tout internet pour 24h si l'attaquant décide de parcourir la plage IPv4 complète... Du coup, c'est une règle qui fonctionne bien sur un petit serveur perso sans prétention mais je n'irai pas la mettre en production sur un frontal-web d'une grande boite... Et pensez à mettre en whitelist votre IP personnelle ou du boulot avec cette règle, ça vous évitera de vous faire jeter pour 24h le jour ou vous l'aurez oublié et que vous lancerez un scan de votre machine :
 
@@ -152,25 +161,29 @@ C'est bon moyen de faire une liste d'IP pourries sur lesquels tester un nmap...^
 
 Déjà vu plus haut, pour finir on autorise enfin des connexions entrantes :
 
+```bash
 *filter
 -A INPUT -i lo -j ACCEPT
 -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
 -A INPUT -p tcp -m multiport --dports 22,80,443 -j ACCEPT
-
+``` 
 Bonus
 
 Bon il me reste quelques règles bonus ou optionnelles à vous proposer, en liste à la Prévert :
 
 On dégage le ping :
 
+```bash
 *mangle
 -A PREROUTING -p icmp -j DROP
+```
 
 Bloquer la fragmentation TCP
 
+```bash
 *mangle
 -A PREROUTING -f -j DROP
-
+```
 Notez pour finir que Fail2ban ajoute tout seul des règles dans votre firewall iptables, mais j'en ai déjà parlé dans [cet article](http://geekeries.org/2016/12/rapide-focus-sur-fail2ban/).
 
 Conclusion
