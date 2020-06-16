@@ -52,6 +52,7 @@ Vous seriez surpris du nombre de tentatives de connexions TCP *bizarres* qu'on
 
 On peut également établir d'autres règles de filtrage triviales basées sur les IP sources en dropant tout ce qui arrive d'un réseau privé/réservé. C'est du spoofing d'IP source, c'est très peu probable pour un serveur avec uniquement une IP publique sur Internet.
 
+```bash
 *mangle
 -A PREROUTING -s 224.0.0.0/8 -j DROP
 -A PREROUTING -s 169.254.0.0/16 -j DROP
@@ -62,5 +63,6 @@ On peut également établir d'autres règles de filtrage triviales basées sur l
 -A PREROUTING -s 0.0.0.0/8 -j DROP
 -A PREROUTING -s 240.0.0.0/5 -j DROP
 -A PREROUTING -s 127.0.0.0/8 ! -i lo -j DROP
+```
 
 Et voilà, après j'ai quelques règles bonus dans le même genre que je vous met à la fin.
