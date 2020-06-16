@@ -11,3 +11,4 @@ iptables -P FORWARD DROP                                               # On est 
 
 apt-get install iptables-persistent
 iptables-save > /etc/iptables/rules.v4
+
