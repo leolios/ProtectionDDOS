@@ -51,3 +51,10 @@ User Agent (OPTIONAL)  Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537
 ORIGIN Default Wordwild
 Mode JS-DOM 
 
+-------------------------------
+
+Après la mise à jour des iptables 
+
+Attaque udpmix sur le port 80 envoi de 1gbps
+    => Le server en curr reçoit Un current 165MBit/s pour le moment avec un AVG de 110MBit/s
+
