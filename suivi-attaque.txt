@@ -56,5 +56,10 @@ Mode JS-DOM
 Après la mise à jour des iptables 
 
 Attaque udpmix sur le port 80 envoi de 1gbps
-    => Le server en curr reçoit Un current 165MBit/s pour le moment avec un AVG de 110MBit/s
+    => Le server reçoit Un current 165MBit/s pour le moment avec un AVG de 110MBit/s en continue.
 
+Attaque DNS envoi de 1gbps
+    => Le server reçoit un current fragmententé en pique de 300Kbit/s et rarement des pique de 300Mbit/s
+    
+Attaque LDAP envoi de 1gbps
+    => e server reçoit un current de 300Mbit/s en continue.
