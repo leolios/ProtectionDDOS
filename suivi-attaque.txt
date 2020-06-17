@@ -9,25 +9,25 @@ AMP => CLDAP envoi en constant 400MBit/s
     
 
 Probléme rencontré : 
-Jun 17 12:10:03 ... sudo[4715]: root : TTY=unknown ; PWD=/home/admin ; USER=root ; COMMAND=/usr/local/vesta/bin/v-list-sys-config json
-Jun 17 12:10:03 ... sudo[4715]: pam_unix(sudo:session): session opened for user root by (uid=0)
-Jun 17 12:10:03 ebula.fr sudo[4715]: pam_unix(sudo:session): session closed for user root
-Jun 17 12:10:05 ebula.fr systemd[1]: Stopping nginx - high performance web server...
-Jun 17 12:10:05 ebula.fr systemd[1]: Stopped nginx - high performance web server.
-Jun 17 12:10:05 ebula.fr systemd[1]: Starting nginx - high performance web server...
-Jun 17 12:10:05 ebula.fr systemd[1]: Started nginx - high performance web server.
-Jun 17 12:10:05 ebula.fr systemd[1]: Reloading The Apache HTTP Server.
-Jun 17 12:10:05 ebula.fr sudo[4326]: pam_unix(sudo:session): session closed for user root
-Jun 17 12:10:05 ebula.fr CRON[4318]: pam_unix(cron:session): session closed for user admin
-Jun 17 12:10:05 ebula.fr apachectl[4909]: AH00112: Warning: DocumentRoot [public_html/public] does not exist
-Jun 17 12:10:05 ebula.fr apachectl[4909]: AH00558: apache2: Could not reliably determine the server's fully qualified domain name, using ebula.fr. Set the 'ServerName' directive globally to suppress this message
-Jun 17 12:10:05 ebula.fr systemd[1]: Reloaded The Apache HTTP Server.
-Jun 17 12:10:06 ebula.fr systemd[1]: Stopping nginx - high performance web server...
-Jun 17 12:10:06 ebula.fr systemd[1]: Stopped nginx - high performance web server.
-Jun 17 12:10:06 ebula.fr systemd[1]: Starting nginx - high performance web server...
-Jun 17 12:10:06 ebula.fr systemd[1]: Started nginx - high performance web server.
-Jun 17 12:10:06 ebula.fr systemd[1]: Reloading The Apache HTTP Server.
-Jun 17 12:10:06 ebula.fr apachectl[5013]: AH00112: Warning: DocumentRoot [public_html/public] does not exist
-Jun 17 12:10:06 ebula.fr apachectl[5013]: AH00112: Warning: DocumentRoot [public_html/public] does not exist
-Jun 17 12:10:06 ebula.fr apachectl[5013]: AH00558: apache2: Could not reliably determine the server's fully qualified domain name, using ebula.fr. Set the 'ServerName' directive globally to suppress this message
+Jun 17 12:10:03  sudo[4715]: root : TTY=unknown ; PWD=/home/admin ; USER=root ; COMMAND=/usr/local/vesta/bin/v-list-sys-config json
+Jun 17 12:10:03  sudo[4715]: pam_unix(sudo:session): session opened for user root by (uid=0)
+Jun 17 12:10:03  sudo[4715]: pam_unix(sudo:session): session closed for user root
+Jun 17 12:10:05  systemd[1]: Stopping nginx - high performance web server...
+Jun 17 12:10:05  systemd[1]: Stopped nginx - high performance web server.
+Jun 17 12:10:05  systemd[1]: Starting nginx - high performance web server...
+Jun 17 12:10:05  systemd[1]: Started nginx - high performance web server.
+Jun 17 12:10:05  systemd[1]: Reloading The Apache HTTP Server.
+Jun 17 12:10:05  sudo[4326]: pam_unix(sudo:session): session closed for user root
+Jun 17 12:10:05  CRON[4318]: pam_unix(cron:session): session closed for user admin
+Jun 17 12:10:05  apachectl[4909]: AH00112: Warning: DocumentRoot [public_html/public] does not exist
+Jun 17 12:10:05  apachectl[4909]: AH00558: apache2: Could not reliably determine the server's fully qualified domain name, using ebula.fr. Set the 'ServerName' directive globally to suppress this message
+Jun 17 12:10:05  systemd[1]: Reloaded The Apache HTTP Server.
+Jun 17 12:10:06  systemd[1]: Stopping nginx - high performance web server...
+Jun 17 12:10:06  systemd[1]: Stopped nginx - high performance web server.
+Jun 17 12:10:06  systemd[1]: Starting nginx - high performance web server...
+Jun 17 12:10:06  systemd[1]: Started nginx - high performance web server.
+Jun 17 12:10:06  systemd[1]: Reloading The Apache HTTP Server.
+Jun 17 12:10:06  apachectl[5013]: AH00112: Warning: DocumentRoot [public_html/public] does not exist
+Jun 17 12:10:06  apachectl[5013]: AH00112: Warning: DocumentRoot [public_html/public] does not exist
+Jun 17 12:10:06  apachectl[5013]: AH00558: apache2: Could not reliably determine the server's fully qualified domain name, using ebula.fr. Set the 'ServerName' directive globally to suppress this message
 Jun 17 12:10:06 ebula.fr systemd[1]: Reloaded The Apache HTTP Server.
