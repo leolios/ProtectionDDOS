@@ -76,6 +76,15 @@ iptables -A INPUT -s 192.168.10.0/24 -j LOG --log-prefix '** SUSPECT **'
 ### 11: Use SYNPROXY on all ports (disables connection limiting rule) ### 
 # Hidden - unlock content above in "Mitigating SYN Floods With SYNPROXY" section
 
+### SSH brute-force protection ### 
+/sbin/iptables -A INPUT -p tcp --dport ssh -m conntrack --ctstate NEW -m recent --set 
+/sbin/iptables -A INPUT -p tcp --dport ssh -m conntrack --ctstate NEW -m recent --update --seconds 60 --hitcount 10 -j DROP  
+
+### Protection against port scanning ### 
+/sbin/iptables -N port-scanning 
+/sbin/iptables -A port-scanning -p tcp --tcp-flags SYN,ACK,FIN,RST RST -m limit --limit 1/s --limit-burst 2 -j RETURN 
+/sbin/iptables -A port-scanning -j DROP
+
 tail -f /var/log/kern.log
 
 apt-get install iptables-persistent
