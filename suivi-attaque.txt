@@ -31,3 +31,17 @@ Jun 17 12:10:06  apachectl[5013]: AH00112: Warning: DocumentRoot [public_html/pu
 Jun 17 12:10:06  apachectl[5013]: AH00112: Warning: DocumentRoot [public_html/public] does not exist
 Jun 17 12:10:06  apachectl[5013]: AH00558: apache2: Could not reliably determine the server's fully qualified domain name, using ebula.fr. Set the 'ServerName' directive globally to suppress this message
 Jun 17 12:10:06 ebula.fr systemd[1]: Reloaded The Apache HTTP Server.
+
+
+Les attaques en L7 sur le domaine 
+
+TARGET http://ebula.fr
+TIME 300
+METHOD  RATELIMIT 
+POST DATA username=test&password=test (ONLY FOR POST METHOD!)
+REFERER https://example.com (OPTIONAL)
+COOKIE PHPSESSID=0123456789 (OPTIONAL)
+User Agent (OPTIONAL)  Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36
+ORIGIN Default Wordwild
+Mode JS-DOM 
+
