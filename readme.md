@@ -43,3 +43,8 @@ Add the following line
 Now, restart rsyslog service using the following command.
 
 `service rsyslog restart`
+
+Display log iptables
+-----------------------------
+
+`tail -f /var/log/kern.log`
