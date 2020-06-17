@@ -14,24 +14,19 @@ Comme vous pouvez le voir, il y a quatre tables différentes sur un système Lin
 
 ### IPtables Chains
 
-PRÉSENTATION : cru, nat, mangle
-
+PREROUTING: raw, nat, mangle
 - S'applique aux paquets qui entrent dans la carte d'interface réseau (NIC)
 
-ENTRÉE : filtre, calandre
-
+INPUT: filter, mangle
 - S'applique aux paquets destinés à une prise locale
 
-AVANT : filtre, mangle
-
+FORWARD: filter, mangle
 - S'applique aux paquets qui sont acheminés par le serveur
 
 SORTIE : brut, filtre, nat, mangle
-
 - S'applique aux paquets que le serveur envoie (générés localement)
 
-AFFICHAGE : nat, mangle
-
+POSTROUTING: nat, mangle
 - S'applique aux paquets qui quittent le serveur
 
 Change Iptables LOG File Name
