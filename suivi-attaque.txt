@@ -35,6 +35,8 @@ Jun 17 12:10:06 ebula.fr systemd[1]: Reloaded The Apache HTTP Server.
 
 Les attaques en L7 sur le domaine 
 
+=> envoie en constant 3-6 MBit/s
+
 TARGET http://ebula.fr
 TIME 300
 METHOD  RATELIMIT 
