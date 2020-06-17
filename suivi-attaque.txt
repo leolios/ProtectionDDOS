@@ -1,5 +1,5 @@
 
-Les attaques en en LAYER 4 qui passe sur le port 80 :
+Les attaques en en LAYER 4 qui passe sur le port 80 sont à base de +500MBit/s:
 Par contre UFW est complétement affolé
 
 AMP => CLDAP incoming en constant 400MBit/s
