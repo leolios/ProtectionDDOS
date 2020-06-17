@@ -21,5 +21,7 @@ iptables -A INPUT -s 192.168.10.0/24 -j LOG --log-level 4
 #We can also add some prefix in generated Logs, So it will be easy to search for logs in a huge file.
 iptables -A INPUT -s 192.168.10.0/24 -j LOG --log-prefix '** SUSPECT **'
 
+tail -f /var/log/kern.log
+
 apt-get install iptables-persistent
 iptables-save > /etc/iptables/rules.v4
