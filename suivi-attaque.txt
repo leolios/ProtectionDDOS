@@ -4,7 +4,7 @@ Par contre UFW est complétement affolé
 
 AMP => CLDAP envoi en constant 400MBit/s
     => NTP envoie en constant 200MBit/s
-    => WSD envoie en constant 565MBit/s
+    => WSD envoie en constant 565MBit/s à était atténué par le serveur à 275MBit/s
     
 
 Probléme rencontré : 
