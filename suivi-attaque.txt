@@ -1,4 +1,6 @@
 
+Les attaques avant la mise en place des nouvelles régles IPTABLE.
+
 Les attaques en en LAYER 4 qui passe sur le port 80 paquets envoyé : 50 000
 Par contre UFW est complétement affolé
 
