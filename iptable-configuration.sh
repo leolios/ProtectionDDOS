@@ -85,7 +85,19 @@ iptables -A INPUT -s 192.168.10.0/24 -j LOG --log-prefix '** SUSPECT **'
 /sbin/iptables -A port-scanning -p tcp --tcp-flags SYN,ACK,FIN,RST RST -m limit --limit 1/s --limit-burst 2 -j RETURN 
 /sbin/iptables -A port-scanning -j DROP
 
+###################################
+#     Troisième configuration     #
+###################################
+
+### PROTECTION PINGFLOOD 
+/sbin/iptables -A INPUT -p icmp --icmp-type echo-request -m limit --limit 1/s -j ACCEPT
+
+###################################
+#         Fin du script           #
+###################################
+
 tail -f /var/log/kern.log
 
 apt-get install iptables-persistent
 iptables-save > /etc/iptables/rules.v4
+systemctl restart rsyslog
