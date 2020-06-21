@@ -180,6 +180,18 @@ cd ddos-deflate-master
 ./install.sh
 
 echo "##################"
+echo "Installation de haproxy depuis https://github.com/jgmdev/"
+echo "##################"
+wget http://www.haproxy.org/download/2.1/src/haproxy-2.1.7.tar.gz -O haproxy.tar.gz
+tar xvzf haproxy.tar.gz
+cd haproxy-2.1.7/
+make -j $(nproc) TARGET=linux-glibc && USE_OPENSSL=1 USE_ZLIB=1 USE_LUA=1 USE_PCRE=1 USE_SYSTEMD=1 USE_GZIP=1 USE_THREAD=1 USE_LIBCRYPT=1
+
+sudo apt-get update
+sudo apt-get install build-essential
+make install
+
+echo "##################"
 echo "Fin de l'installation"
 echo "##################"
 
