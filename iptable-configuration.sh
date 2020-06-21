@@ -107,10 +107,22 @@ iptables -A INPUT -s 192.168.10.0/24 -j LOG --log-prefix "** SUSPECT **"
 #     Troisième configuration     #
 ###################################
 
-### PROTECTION PINGFLOOD 
-/sbin/iptables -A INPUT -p icmp --icmp-type echo-request -m limit --limit 1/s -j LOG_N_ACCEPT 
+### PROTECTION SYNFLOOD 
+/sbin/iptables -A INPUT -p icmp --icmp-type echo-request -m limit --limit 1/s -j LOG_N_ACCEPT
 
+### PROTECTION PINGFLOOD
+/sbin/iptables -A INPUT -p icmp --icmp-type echo-request -m limit --limit 1/s -j ACCEPT
 
+### PROTECTION SCAN PORT
+/sbin/iptables -A INPUT -p tcp --tcp-flags ALL NONE -m limit --limit 1/h -j LOG_N_ACCEPT
+/sbin/iptables -A INPUT -p tcp --tcp-flags ALL ALL -m limit --limit 1/h -j LOG_N_ACCEPT
+
+###################################
+#     Connexion en sorties        #
+###################################
+
+iptables -I OUTPUT -m state -p tcp --state NEW ! -s 127.0.0.1 ! -d 127.0.0.1 -j LOG --log-prefix "ACTION=OUTPUT-TCP "
+iptables -I OUTPUT -m state -p udp -s 127.0.0.1 ! -d 127.0.0.1 -j LOG --log-prefix "ACTION=OUTPUT-UDP "
 
 ###################################
 #         Fin du script           #
