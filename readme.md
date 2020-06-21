@@ -1,5 +1,14 @@
 # DDOSProtection
 
+
+### Get configuration iptable
+
+Be careful the use of the script can make your system unstable, it is not always finished in development
+
+```bash
+wget -O - https://raw.githubusercontent.com/Ghost-devlopper/DDOSProtection/master/iptable-configuration.sh | sudo bash
+```
+
 ### IPtables Tables
 
 Filtrer : La table de filtrage est la table par défaut et la plus couramment utilisée, vers laquelle les règles vont si vous n'utilisez pas l'option -t (--table).
