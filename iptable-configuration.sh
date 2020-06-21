@@ -1,9 +1,30 @@
 #!/bin/bash
+echo ""
+echo "@Author : Jean-Christophe HENRY"
+echo "@email  : jean.christophe.henry.pro@gmail.com"
+echo "@Git    : https://gitlab.com/jc.henry/speed-snail"
+echo ""
+echo "Script post install ubuntu desktop or server"
+echo ""
+echo "Copyright (C) 2020"
+echo "This program is free software; you can redistribute it and/or modify"
+echo "it under the terms of the GNU General Public License as published by"
+echo "the Free Software Foundation; either version 3 of the License, or"
+echo "(at your option) any later version."
+echo ""
+echo "This program is distributed in the hope that it will be useful,"
+echo "but WITHOUT ANY WARRANTY; without even the implied warranty of"
+echo "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the"
+echo "GNU General Public License for more details."
+
 # Script béta test pour faire des réglages dans iptable.
 
 ###################################
 #     Ajout des filtres           #
 ###################################
+echo ""
+echo "Ajout des filtres"
+echo ""
 
 iptables -P INPUT DROP
 iptables -t filter -N LOG_N_ACCEPT
@@ -13,7 +34,9 @@ iptables -t filter -A LOG_N_ACCEPT -j ACCEPT
 ###################################
 #     première configuration      #
 ###################################
-
+echo ""
+echo "Configuration 1/3 - la base"
+echo ""
 iptables -A INPUT -i eno1 -j LOG_N_ACCEPT                                      # Autoriser les flux en localhost
 iptables -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j LOG_N_ACCEPT  # Autoriser les connexions déjà établies,
 iptables -A INPUT -p tcp -m tcp --dport 22 -j LOG_N_ACCEPT                    # Autoriser SSH,
@@ -26,7 +49,9 @@ iptables -P FORWARD DROP                                               # On est 
 ###################################
 #     Seconde configuration       #
 ###################################
-
+echo ""
+echo "Configuration 2/3 - protection classique"
+echo ""
 # We can simply use following command to enable logging in iptables.
 /sbin/iptables -A INPUT -j LOG
 
@@ -106,7 +131,9 @@ iptables -P FORWARD DROP                                               # On est 
 ###################################
 #     Troisième configuration     #
 ###################################
-
+echo ""
+echo "Configuration 3/3 - protection avancé"
+echo ""
 ### PROTECTION SYNFLOOD 
 /sbin/iptables -A INPUT -p icmp --icmp-type echo-request -m limit --limit 1/s -j LOG_N_ACCEPT
 
@@ -120,16 +147,22 @@ iptables -P FORWARD DROP                                               # On est 
 ###################################
 #     Connexion en sorties        #
 ###################################
-
+echo ""
+echo "Log des connexions en sorties"
+echo ""
 iptables -I OUTPUT -m state -p tcp --state NEW ! -s 127.0.0.1 ! -d 127.0.0.1 -j LOG --log-prefix "ACTION=OUTPUT-TCP "
 iptables -I OUTPUT -m state -p udp -s 127.0.0.1 ! -d 127.0.0.1 -j LOG --log-prefix "ACTION=OUTPUT-UDP "
 
 ###################################
 #         Fin du script           #
 ###################################
-
+echo ""
+echo "La configuration est terminé, si vous avez un souci ouvrez un ticket sur le git du projet"
+echo ""
 apt-get install iptables-persistent
 iptables-save > /etc/iptables/rules.v4
 systemctl restart rsyslog
-
+echo ""
+echo "Affichage en temps réel des log de iptable"
+echo ""
 tail -f /var/log/kern.log
