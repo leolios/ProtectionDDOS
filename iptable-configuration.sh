@@ -8,7 +8,6 @@ echo "|_____/ |_|\_|| |_|\___)_||_|_|_(_|_______)___/|_| |_|\____)"
 echo "          (_____|                                           "
 echo "
 echo "@Author : Jean-Christophe H"
-echo "@Git    : https://gitlab.com/jc.henry"
 echo "@Project: https://github.com/Ghost-devlopper/DDOSProtection
 echo ""
 echo "Script post install ubuntu desktop or server"
