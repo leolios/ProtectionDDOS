@@ -190,9 +190,10 @@ make -j $(nproc) TARGET=linux-glibc && USE_OPENSSL=1 USE_ZLIB=1 USE_LUA=1 USE_PC
 sudo apt-get update
 sudo apt-get install build-essential
 make install
+# haproxy -f /etc/haproxy.cfg && -D -p /var/run/haproxy.pid -sf $(cat /var/run/haproxy.pid)
 
 echo "##################"
-echo "Fin de l'installation"
+echo "Fin des installations"
 echo "##################"
 
 systemctl restart ddos
