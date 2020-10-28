@@ -7,7 +7,7 @@ echo "| |__/ /| ( ( | | | |_( ( | | | |_ / /___| |_| | | | ( (/ / "
 echo "|_____/ |_|\_|| |_|\___)_||_|_|_(_|_______)___/|_| |_|\____)"
 echo "          (_____|                                           "
 echo "
-echo "@Author : Jean-Christophe H"
+echo "@Author : JC H"
 echo "@Project: https://github.com/Ghost-devlopper/DDOSProtection
 echo ""
 echo "Script post install ubuntu desktop or server"
