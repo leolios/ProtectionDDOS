@@ -208,7 +208,6 @@ echo "##################"
 echo "##################"
 echo "La configuration est terminé, si vous avez un soucis ouvrez un ticket sur le git du projet https://github.com/Ghost-devlopper/DDOSProtection/issues"
 echo "##################"
-apt-get install iptables-persistent
 iptables-save > /etc/iptables/rules.v4
 systemctl restart rsyslog
 echo ""
