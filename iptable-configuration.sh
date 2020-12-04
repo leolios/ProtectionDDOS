@@ -27,14 +27,19 @@ echo "GNU General Public License for more details."
 #  Installation des dépendances pour ddos-deflate
 ###################################
 
+###################################
+#  Installation des dépendances pour ddos-deflate
+###################################
+apt install iptables-persistent -y
+
 echo "##################"
 echo "Installation es dépendances pour ddos-deflate"
 echo "##################"
-apt install dnsutils
-apt-get install net-tools
-apt-get install tcpdump
-apt-get install dsniff -y
-apt install grepcidr
+apt install dnsutils -y
+apt install net-tools -y
+apt install tcpdump -y
+apt install dsniff -y
+apt install grepcidr -y
 
 echo "##################"
 echo "Installation de ddos-deflate depuis https://github.com/jgmdev/"
