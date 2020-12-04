@@ -23,6 +23,28 @@ echo "but WITHOUT ANY WARRANTY; without even the implied warranty of"
 echo "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the"
 echo "GNU General Public License for more details."
 
+###################################
+#  Installation des dépendances pour ddos-deflate
+###################################
+
+echo "##################"
+echo "Installation es dépendances pour ddos-deflate"
+echo "##################"
+apt install dnsutils
+apt-get install net-tools
+apt-get install tcpdump
+apt-get install dsniff -y
+apt install grepcidr
+
+echo "##################"
+echo "Installation de ddos-deflate depuis https://github.com/jgmdev/"
+echo "##################"
+wget https://github.com/jgmdev/ddos-deflate/archive/master.zip -O ddos.zip
+unzip ddos.zip
+cd ddos-deflate-master
+./install.sh
+systemctl restart ddos
+
 # Script béta test pour faire des réglages dans iptable.
 ###################################
 #     Ajout des filtres           #
@@ -158,27 +180,6 @@ echo "##################"
 iptables -I OUTPUT -m state -p tcp --state NEW ! -s 127.0.0.1 ! -d 127.0.0.1 -j LOG --log-prefix "ACTION=OUTPUT-TCP "
 iptables -I OUTPUT -m state -p udp -s 127.0.0.1 ! -d 127.0.0.1 -j LOG --log-prefix "ACTION=OUTPUT-UDP "
 
-###################################
-#  Installation des dépendances pour ddos-deflate
-###################################
-
-echo "##################"
-echo "Installation es dépendances pour ddos-deflate"
-echo "##################"
-apt install dnsutils
-apt-get install net-tools
-apt-get install tcpdump
-apt-get install dsniff -y
-apt install grepcidr
-
-echo "##################"
-echo "Installation de ddos-deflate depuis https://github.com/jgmdev/"
-echo "##################"
-wget https://github.com/jgmdev/ddos-deflate/archive/master.zip -O ddos.zip
-unzip ddos.zip
-cd ddos-deflate-master
-./install.sh
-
 #echo "##################"
 #echo "Installation de haproxy depuis https://github.com/jgmdev/"
 #echo "##################"
@@ -195,8 +196,6 @@ cd ddos-deflate-master
 echo "##################"
 echo "Fin des installations"
 echo "##################"
-
-systemctl restart ddos
 
 ###################################
 #         Fin du script           #
